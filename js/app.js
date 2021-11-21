@@ -3,7 +3,7 @@ showNotes();
 
 // If user adds a note, add it to the localStorage
 let addBtn = document.getElementById("addBtn");
-addBtn.addEventListener("click", function (e) {
+addBtn.addEventListener("click", function(e) {
     let addTxt = document.getElementById("addTxt");
     let addTitle = document.getElementById("addTitle");
     let notes = localStorage.getItem("notes");
@@ -18,7 +18,11 @@ addBtn.addEventListener("click", function (e) {
     }
     if (addTxt.value != "" && addTitle.value != "")
         notesObj.push(myObj);
-    else {
+    else if (addTxt.value == "" && addTitle.value != "") {
+        alert('Please add notes');
+    } else if (addTitle.title == "" && addTxt.value != "") {
+        alert('Please add title');
+    } else {
         alert('Please add title and notes');
     }
     localStorage.setItem("notes", JSON.stringify(notesObj));
@@ -36,13 +40,13 @@ function showNotes() {
         notesObj = JSON.parse(notes);
     }
     let html = "";
-    notesObj.forEach(function (element, index) {
+    notesObj.forEach(function(element, index) {
         html += `
             <div class="noteCard my-2 mx-2 card border-success mb-3" style="width: 18rem;">
                     <div class="card-body">
                         <h5 class="card-title">${element.title}</h5>
                         <p class="card-text"> ${element.text}</p>
-                        <button id="${index}"onclick="deleteNote(this.id)" class="btn btn-primary">Delete Note</button>
+                        <button id="${index}" onclick="deleteNote(this.id)" class="btn btn-primary">Delete Note</button>
                     </div>
                 </div>`;
     });
@@ -69,10 +73,10 @@ function deleteNote(index) {
 }
 
 let search = document.getElementById("searchTxt");
-search.addEventListener("input", function () {
+search.addEventListener("input", function() {
     let inputVal = search.value.toLowerCase();
     let noteCards = document.getElementsByClassName("noteCard");
-    Array.from(noteCards).forEach(function (element) {
+    Array.from(noteCards).forEach(function(element) {
         let cardTxt = element.getElementsByTagName("p")[0].innerText;
         if (cardTxt.includes(inputVal)) {
             element.style.display = "block";
